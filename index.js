@@ -4,6 +4,7 @@ const cors = require('cors');
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 
 let notes = [
     {
@@ -60,6 +61,14 @@ app.post('/api/notes', (request, response) => {
     notes = notes.concat(note)
   
     response.json(note)
+})
+
+app.put('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id);
+    const newNote = request.body;
+    notes.map(n => n.id !== id ? n : newNote)
+    
+    response.json(newNote)
 })
 
 app.get('/api/notes/:id', (request, response) => {
